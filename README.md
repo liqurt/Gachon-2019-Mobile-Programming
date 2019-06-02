@@ -1,8 +1,3 @@
 # MP_YKL
-link android to github
-
-Mobile programming of Gachon university software department
-2019-semester 1
-# MK2
-# MK2
-# MK2
+지금 이 버전이 마켓에 올린 버전이에요
+마스터에 푸시가 안되서 플러스마스터에다가 올렸습니다
