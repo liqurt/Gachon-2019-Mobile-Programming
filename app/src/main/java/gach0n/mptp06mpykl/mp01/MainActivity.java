@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Vibrator;
 import android.support.annotation.NonNull;
@@ -21,6 +22,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -30,6 +34,7 @@ import android.widget.Toast;
 
 //import com.example.mp01.service.JobSchedulerStart;
 
+import gach0n.mptp06mpykl.mp01.Fragment.Menu1Fragment;
 import gach0n.mptp06mpykl.mp01.Fragment.Menu2Fragment;
 import gach0n.mptp06mpykl.mp01.Fragment.Menu3Fragment;
 
@@ -49,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
     //XML UI 선언
     EditText input;
     Button button;
+    Button callWebView;
     TextView output;
     TextView webPasingSubList1;
     TextView webPasingSubList2;
@@ -56,32 +62,55 @@ public class MainActivity extends AppCompatActivity {
     String HTMLContentInStringFormat = "";
     String subItemList1 = "";
     String subItemList2 = "";
+    String subItemListPrice1 = "";
+    String subItemListPrice2 = "";
     PendingIntent intent;
     NotificationManager notificationManager;
     SharedPreferences sh_Pref;
     SharedPreferences.Editor toEdit;
     int price = -1;
-
+    WebView browser;
+    Menu1Fragment menu1Fragment;
     Menu2Fragment menu2Fragment;
     Menu3Fragment menu3Fragment;
     timerThread t;
     webParsingThread wt;
+
+    //Sublist
+    String[] sub1_ = new String[10];
+    String[] sub2_= new String[10];
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //XML Inflation
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Log.d("tag", "onCrea3te()");
+        Log.d("tag", "onCreate()");
         final LinearLayout linear2 = findViewById(R.id.linear2);
         final LinearLayout linear1 = findViewById(R.id.linear1);
         //menu2Fragment = (Menu2Fragment) getSupportFragmentManager().findFragmentById(R.id.jaesin);
         final ViewPager mainViewPager = findViewById(R.id.mainViewPager);
         mainViewPager.setAdapter(new BottomNavigationAdapter(getSupportFragmentManager()));
-
+        callWebView = findViewById(R.id.callWebView);
         t = new timerThread();
         wt = new webParsingThread();
 
+        //
+
+
+        callWebView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                browser = findViewById(R.id.webkit);
+                if (browser.getVisibility() == View.INVISIBLE) {
+                    browser.setVisibility(View.VISIBLE);
+                }
+                browser.getSettings().setJavaScriptEnabled(true);
+                browser.setWebViewClient(new WebViewClient());
+                browser.loadUrl("https://search.naver.com/search.naver?ie=utf8&query=" + input.getText());
+            }
+        });
 
         final BottomNavigationView bottomNavigation = findViewById(R.id.bottomNavigation);
         bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -98,7 +127,6 @@ public class MainActivity extends AppCompatActivity {
                         return true;
                     default:
                         return false;
-
                 }
             }
         });
@@ -109,10 +137,12 @@ public class MainActivity extends AppCompatActivity {
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
             }
+
             @Override
             public void onPageSelected(int position) {
                 bottomNavigation.getMenu().getItem(position).setChecked(true);
             }
+
             @Override
             public void onPageScrollStateChanged(int state) {
 
@@ -136,7 +166,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "웹크롤링 중입니다...", Toast.LENGTH_LONG).show();
                 JsoupAsyncTask jsoupAsyncTask = new JsoupAsyncTask();
                 jsoupAsyncTask.execute();
-                if(output.getVisibility()==View.INVISIBLE){
+                if (output.getVisibility() == View.INVISIBLE) {
                     output.setVisibility(View.VISIBLE);
                 }
             }
@@ -145,10 +175,10 @@ public class MainActivity extends AppCompatActivity {
         applySharedPreference();
     } // 여기까지가 onCreate?
 
-    public void ThreadStarter(boolean go){
-        if(go){
+    public void ThreadStarter(boolean go) {
+        if (go) {
             t.start();
-        }else{
+        } else {
 
         }
     }
@@ -166,46 +196,44 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) { // create menu
         menu.add(0, 0, 50, "Push notification").setIcon(R.drawable.push).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         menu.add(0, 1, 50, "Info").setIcon(R.drawable.info).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-        menu.add(0, 2, 50, "Guideline").setIcon(R.drawable.ic_home_black_24dp).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
-            case 0 :
+        switch (item.getItemId()) {
+            case 0:
                 AlertDialog.Builder alert = new AlertDialog.Builder(this);
                 alert.setTitle("Timer 설정");
                 alert.setMessage("[여기에 ms 단위로 입력]");
                 final EditText input = new EditText(this);
-                if(timerClass.getTime() >= 10000){
+                if (timerClass.getTime() >= 10000) {
                     input.setHint(Integer.toString(timerClass.getTime()));
-                }
-                else{
+                } else {
                     input.setHint("최소 10초! (10000ms)");
                 }
                 alert.setView(input);
                 alert.setPositiveButton("확인", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        String timerAsString="";
+                        String timerAsString = "";
                         try {
                             timerAsString = input.getText().toString();
-                            Log.d("tag","설정한 Timer 값 : "+timerAsString);
+                            Log.d("tag", "설정한 Timer 값 : " + timerAsString);
                             int timer = Integer.parseInt(timerAsString);
-                            if(timer<1){
+                            if (timer < 1) {
                                 Toast.makeText(getApplicationContext(), "자연수로 입력해주세요", Toast.LENGTH_SHORT).show();
                                 return;
                             }
-                            if(timer<10000){
-                                Toast.makeText(getApplicationContext(),"최소 10초!(10000ms)",Toast.LENGTH_SHORT).show();
+                            if (timer < 10000) {
+                                Toast.makeText(getApplicationContext(), "최소 10초!(10000ms)", Toast.LENGTH_SHORT).show();
                                 return;
                             }
                             timerClass.setTime(timer);
                             ThreadStarter(true);
-                        }catch (NumberFormatException e){
+                        } catch (NumberFormatException e) {
                             Toast.makeText(getApplicationContext(), "자연수로 입력해주세요", Toast.LENGTH_SHORT).show();
-                        }catch (Exception e){
-                            Log.d("tag",e.toString());
+                        } catch (Exception e) {
+                            Log.d("tag", e.toString());
                         }
                     }
                 });
@@ -216,13 +244,11 @@ public class MainActivity extends AppCompatActivity {
                 });
                 alert.show();
                 break;
-            case 1 :
-                Toast.makeText(getApplicationContext(), "1번", Toast.LENGTH_SHORT).show();
+            case 1:
+                Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/jaeesin/MP_YKL"));
+                startActivity(i);
                 break;
-            case 2 :
-                Toast.makeText(getApplicationContext(), "2번", Toast.LENGTH_SHORT).show();
-                break;
-            default :
+            default:
                 Toast.makeText(getApplicationContext(), "default", Toast.LENGTH_SHORT).show();
                 return super.onOptionsItemSelected(item);
         }
@@ -231,6 +257,7 @@ public class MainActivity extends AppCompatActivity {
 
     private class JsoupAsyncTask extends AsyncTask<Void, Void, Void> {
         int lowPrice;
+
         @Override
         protected void onPreExecute() {
             lowPrice = 999999999;
@@ -244,9 +271,6 @@ public class MainActivity extends AppCompatActivity {
                 String sample = "";
                 String sub = "";
                 String userQuery = input.getText().toString();
-
-                String subItemList[];
-                String subPriceList[];
                 HTMLPageURL += userQuery;
                 Document doc = Jsoup.connect(HTMLPageURL).get();
                 Log.d("tag", "\nHTMLPageURL(modified) : " + HTMLPageURL);
@@ -263,44 +287,24 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
 
-
-                Elements subItems = doc.select("ul.product_list li.product_item div.info strong");
-                int subCount = 0;
-                for (Element e : subItems) {
-                    //함께 찾아본 상품
-                    if (subCount < 5) {
-                        sub = e.text();
-                        subItemList1 += sub + "\n";
-                        subCount++;
-                    }
-                    //함께 살만한 상품
-                    else {
-                        sub = e.text();
-                        subItemList2 += sub + "\n";
-                    }
-                }
-
-                subCount=0;
-                String subPrice;
-                Elements subItemsPrice = doc.select("ul.product_list li.product_item div.info em.num");
-                subPrice = subItemsPrice.text();
-                subPrice = subPrice.replaceAll("\\,", "");
-                subPrice = subPrice.replaceAll(" ","\n");
-                String temp = subItemList1+subItemList2;
-                subItemList = temp.split("\n");
-                subPriceList = subPrice.split("\n");
-
-                for(int i=0;i<10;i++){
-                    Log.d("tag",subItemList[i] + subPriceList[i]);
-                }
-
-                Elements subItemImg = doc.select("ul.product_list li.product_item div.thumb img");
-                List<String> imgUrl =new ArrayList<>();
                 int c=0;
-                for(Element eImg : subItemImg){
-                    imgUrl.add(eImg.attr("abs:src"));
+                //ITEM
+                Elements subItems = doc.select("ul.product_list li.product_item div.info strong");
+                for (Element e : subItems) {
+                    sub = e.text();
+                    sub1_[c] = sub;
+                    c++;
                 }
-                Log.d("tag","IMG : "+imgUrl);
+                c=0;
+                //PRICE
+                Elements subItems_ = doc.select("ul.product_list li.product_item div.info em.num");
+                for (Element e : subItems_) {
+                    sub = e.text();
+                    sub = sub.replace(",", "");
+                    sub2_[c] = sub;
+                    c++;
+                }
+
 
                 //여기가 갤러리뷰, 리스트뷰에 걸렸다면 이곳에 걸리지 않습니다.
                 titles = doc.select("em.price_num");
@@ -318,8 +322,8 @@ public class MainActivity extends AppCompatActivity {
                         lowPrice = price;
                     }
                 }
-                Log.d("tag","현재 userQuery : "+userQuery);
-                Log.d("tag","현재 lowPrice : "+lowPrice);
+                Log.d("tag", "현재 userQuery : " + userQuery);
+                Log.d("tag", "현재 lowPrice : " + lowPrice);
 
 
                 //혹시라도 검색어를 잘못 입력했다면, 잘못 입력된 검색어 말고 보통 어떤 올바른 검색어로 검색하는지 찾습니다.
@@ -335,7 +339,7 @@ public class MainActivity extends AppCompatActivity {
                     Log.d("tag", "ModifiedKeyword(not \"\") : " + modifiedKeyword);
                     if (lowPrice == 999999999) {
                         HTMLContentInStringFormat = "검색어가 잘못 된 것 같네요, " + modifiedKeyword + "로 검색해 보세요!";
-                    }else{
+                    } else {
                         HTMLContentInStringFormat = "검색어가 잘못 된 것 같네요, 하지만 " + modifiedKeyword + "로 검색하니 " + lowPrice + "라는 값이 최저가로 나왔습니다.";
                     }
                 }
@@ -354,12 +358,14 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("tag", e.toString());
             } catch (IOException e) {
                 Log.d("tag", e.toString());
-                HTMLContentInStringFormat="인터넷 연결이 원활하지 않음.";
+                HTMLContentInStringFormat = "인터넷 연결이 원활하지 않음.";
+            } catch (ArrayIndexOutOfBoundsException e) {
+                Log.d("tag", e.toString() + "씨발");
             } catch (Exception e) {
-                Log.d("tag",e.toString());
+                Log.d("tag", e.toString());
             }
             resultClass.setMsg(HTMLContentInStringFormat);
-            Log.d("tag","resultClass.getMsg() : "+resultClass.getMsg());
+            Log.d("tag", "resultClass.getMsg() : " + resultClass.getMsg());
             return null;
         }
 
@@ -367,6 +373,8 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(Void result) {
             Log.d("tag", "onPostExecute()");
             output.setText(resultClass.getMsg());
+            //output.setTextSize(16);
+
             Bundle myBundle = new Bundle();
             myBundle.putString("content1", subItemList1);
             myBundle.putString("content2", subItemList2);
@@ -386,18 +394,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //여기서 부터 쓰레드
-    public class timerThread extends Thread{
-        public void run(){
-            Log.d("tag","timerThread run");
+    public class timerThread extends Thread {
+        public void run() {
+            Log.d("tag", "timerThread run");
             wt.start();
-            while(true) {
+            while (true) {
                 while (timerClass.getTime() > 0) {
                     try {
                         Thread.sleep(timerClass.getTime() + 3000);
-                        if(timerClass.getTime() == -1){
-                            Log.d("tag","웹파싱 스레드 존버중");
-                        }
-                        else{
+                        if (timerClass.getTime() == -1) {
+                            Log.d("tag", "웹파싱 스레드 존버중");
+                        } else {
                             wt.run();
                         }
                     } catch (InterruptedException e) {
@@ -410,27 +417,31 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public class webParsingThread extends Thread{
-        public void run(){
-            Log.d("tag","WebParsingThread run");
+    public class webParsingThread extends Thread {
+        public void run() {
+            Log.d("tag", "WebParsingThread run");
             JsoupAsyncTask jsoupAsyncTask = new JsoupAsyncTask();
             jsoupAsyncTask.execute();
         }
     }
 
-    public void notification(){
-        Log.d("tag","notification()");
-        Vibrator vibrator=(Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
+    public void notification() {
+        Log.d("tag", "notification()");
+        Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         vibrator.vibrate(300);
         Notification.Builder builder = new Notification.Builder(this)
                 .setSmallIcon(R.mipmap.circle4white) // 아이콘 설정하지 않으면 오류남
                 .setDefaults(Notification.DEFAULT_ALL)
-                .setContentTitle(resultClass.getQuery()+"/"+resultClass.getLowest()) // 제목 설정
+                .setContentTitle(resultClass.getQuery() + "/" + resultClass.getLowest()) // 제목 설정
                 .setContentText(resultClass.getMsg()) // 내용 설정
                 .setTicker(resultClass.getMsg()) // 상태바에 표시될 한줄 출력
                 .setAutoCancel(true)
                 .setContentIntent(intent);
-        notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+        notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         notificationManager.notify(0, builder.build());
+        try {
+        }catch(Exception e){
+            Log.d("tag","씨발 + "+e.toString());
+        }
     }
 }

@@ -6,20 +6,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_weight="9"
-    android:background="#11008800"
     android:orientation="vertical"
     android:padding="0dp"
     tools:context="gach0n.mptp06mpykl.mp01.MainActivity">
 
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="150dp"
-        android:text="숏핑"
-        android:textSize="36sp"
-        android:textStyle="bold" />
+   <ImageView
+       android:layout_gravity="center_horizontal"
+       android:layout_width="70dp"
+       android:layout_height="60dp"
+       android:src="@drawable/logo"/>
 
     <EditText
         android:id="@+id/input"
@@ -36,14 +31,26 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:background="@android:color/holo_orange_dark"
+        android:background="#FF9800"
         android:text="검색하기"
         android:textColor="#ffffffff"
         android:textSize="24sp"
         android:textStyle="bold" />
 
+    <Button
+        android:id="@+id/callWebView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:background="#FF9800"
+        android:text="알아보기"
+        android:visibility="visible"/>
+
     <TextView
         android:id="@+id/output"
+        android:textStyle="bold"
+        android:textSize="24sp"
+        android:layout_marginTop="30dp"
         android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
@@ -80,7 +87,7 @@
             android:id="@+id/bottomNavigation"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="#ffffff"
+            android:background="@android:color/holo_orange_dark"
             app:itemIconTint="@color/selector_bottom_nav"
             app:itemTextColor="@color/selector_bottom_nav"
             app:layout_constraintBottom_toBottomOf="parent"

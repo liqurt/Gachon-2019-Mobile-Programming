@@ -7,6 +7,7 @@
     android:orientation="vertical"
     android:id="@+id/linear2">
 
+
     <TextView
         android:id="@+id/output"
         android:layout_width="match_parent"
@@ -32,5 +33,9 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:text="이전" />
+
+
+
+
 
 </LinearLayout>
