@@ -41,7 +41,8 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -129,8 +130,6 @@ public class MainActivity extends AppCompatActivity {
         output.setMovementMethod(new ScrollingMovementMethod());
         intent = PendingIntent.getActivity(this, 0, new Intent(getApplicationContext(), MainActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
 
-        Toast.makeText(getApplicationContext(), Long.toString(System.currentTimeMillis()),Toast.LENGTH_SHORT).show();
-
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -179,7 +178,12 @@ public class MainActivity extends AppCompatActivity {
                 alert.setTitle("Timer 설정");
                 alert.setMessage("[여기에 ms 단위로 입력]");
                 final EditText input = new EditText(this);
-                input.setHint(Integer.toString(timerClass.getTime()));
+                if(timerClass.getTime() >= 10000){
+                    input.setHint(Integer.toString(timerClass.getTime()));
+                }
+                else{
+                    input.setHint("최소 10초! (10000ms)");
+                }
                 alert.setView(input);
                 alert.setPositiveButton("확인", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
@@ -190,6 +194,10 @@ public class MainActivity extends AppCompatActivity {
                             int timer = Integer.parseInt(timerAsString);
                             if(timer<1){
                                 Toast.makeText(getApplicationContext(), "자연수로 입력해주세요", Toast.LENGTH_SHORT).show();
+                                return;
+                            }
+                            if(timer<10000){
+                                Toast.makeText(getApplicationContext(),"최소 10초!(10000ms)",Toast.LENGTH_SHORT).show();
                                 return;
                             }
                             timerClass.setTime(timer);
@@ -237,6 +245,8 @@ public class MainActivity extends AppCompatActivity {
                 String sub = "";
                 String userQuery = input.getText().toString();
 
+                String subItemList[];
+                String subPriceList[];
                 HTMLPageURL += userQuery;
                 Document doc = Jsoup.connect(HTMLPageURL).get();
                 Log.d("tag", "\nHTMLPageURL(modified) : " + HTMLPageURL);
@@ -244,7 +254,6 @@ public class MainActivity extends AppCompatActivity {
 
                 //여기부터 리스트뷰, 여기에 걸리면 갤러리뷰엔 걸리지 않습니다.
                 Elements titles = doc.select("div.info_price em.num");
-                Elements subItems = doc.select("ul.product_list li.product_item div.info");
                 for (Element e : titles) {
                     sample = e.text();
                     sample = sample.replaceAll("\\,", "");
@@ -252,8 +261,10 @@ public class MainActivity extends AppCompatActivity {
                     if (price < lowPrice) {
                         lowPrice = price;
                     }
-
                 }
+
+
+                Elements subItems = doc.select("ul.product_list li.product_item div.info strong");
                 int subCount = 0;
                 for (Element e : subItems) {
                     //함께 찾아본 상품
@@ -269,6 +280,27 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
 
+                subCount=0;
+                String subPrice;
+                Elements subItemsPrice = doc.select("ul.product_list li.product_item div.info em.num");
+                subPrice = subItemsPrice.text();
+                subPrice = subPrice.replaceAll("\\,", "");
+                subPrice = subPrice.replaceAll(" ","\n");
+                String temp = subItemList1+subItemList2;
+                subItemList = temp.split("\n");
+                subPriceList = subPrice.split("\n");
+
+                for(int i=0;i<10;i++){
+                    Log.d("tag",subItemList[i] + subPriceList[i]);
+                }
+
+                Elements subItemImg = doc.select("ul.product_list li.product_item div.thumb img");
+                List<String> imgUrl =new ArrayList<>();
+                int c=0;
+                for(Element eImg : subItemImg){
+                    imgUrl.add(eImg.attr("abs:src"));
+                }
+                Log.d("tag","IMG : "+imgUrl);
 
                 //여기가 갤러리뷰, 리스트뷰에 걸렸다면 이곳에 걸리지 않습니다.
                 titles = doc.select("em.price_num");
@@ -301,7 +333,7 @@ public class MainActivity extends AppCompatActivity {
                 //검색어를 제대로 입력하지 않았지만, 검색하고 싶은 것을 어림 잡을 수 있는 경우
                 if (modifiedKeyword != "") {
                     Log.d("tag", "ModifiedKeyword(not \"\") : " + modifiedKeyword);
-                    if (lowPrice == 99999999) {
+                    if (lowPrice == 999999999) {
                         HTMLContentInStringFormat = "검색어가 잘못 된 것 같네요, " + modifiedKeyword + "로 검색해 보세요!";
                     }else{
                         HTMLContentInStringFormat = "검색어가 잘못 된 것 같네요, 하지만 " + modifiedKeyword + "로 검색하니 " + lowPrice + "라는 값이 최저가로 나왔습니다.";
@@ -327,13 +359,13 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("tag",e.toString());
             }
             resultClass.setMsg(HTMLContentInStringFormat);
+            Log.d("tag","resultClass.getMsg() : "+resultClass.getMsg());
             return null;
         }
 
         @Override
         protected void onPostExecute(Void result) {
             Log.d("tag", "onPostExecute()");
-            HTMLContentInStringFormat = resultClass.getQuery()+"의 최저가는 " + resultClass.getLowest() + "원입니다.";
             output.setText(resultClass.getMsg());
             Bundle myBundle = new Bundle();
             myBundle.putString("content1", subItemList1);
@@ -362,7 +394,12 @@ public class MainActivity extends AppCompatActivity {
                 while (timerClass.getTime() > 0) {
                     try {
                         Thread.sleep(timerClass.getTime() + 3000);
-                        wt.run();
+                        if(timerClass.getTime() == -1){
+                            Log.d("tag","웹파싱 스레드 존버중");
+                        }
+                        else{
+                            wt.run();
+                        }
                     } catch (InterruptedException e) {
                         Log.d("tag", e.toString());
                     } catch (IllegalThreadStateException e) {
@@ -384,7 +421,7 @@ public class MainActivity extends AppCompatActivity {
     public void notification(){
         Log.d("tag","notification()");
         Vibrator vibrator=(Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
-        vibrator.vibrate(500);
+        vibrator.vibrate(300);
         Notification.Builder builder = new Notification.Builder(this)
                 .setSmallIcon(R.mipmap.circle4white) // 아이콘 설정하지 않으면 오류남
                 .setDefaults(Notification.DEFAULT_ALL)
