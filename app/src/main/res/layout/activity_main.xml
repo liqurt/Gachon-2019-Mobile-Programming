@@ -25,12 +25,19 @@
         android:hint="상품명으로 검색하세요."
         android:textSize="18sp"
         android:textStyle="bold" />
+<LinearLayout
+    android:layout_gravity="center_horizontal"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
 
     <Button
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:layout_marginRight="16dp"
+        android:layout_weight="1"
         android:background="#FF9800"
         android:text="검색하기"
         android:textColor="#ffffffff"
@@ -42,9 +49,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="16dp"
+        android:layout_weight="1"
         android:background="#FF9800"
         android:text="알아보기"
-        android:visibility="visible"/>
+        android:textColor="#ffffffff"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:visibility="visible" />
+</LinearLayout>
 
     <TextView
         android:id="@+id/output"
@@ -53,16 +66,6 @@
         android:layout_marginTop="30dp"
         android:gravity="center"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <TextView
-        android:id="@+id/webPasingSubItemList1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <TextView
-        android:id="@+id/webPasingSubItemList2"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
 

@@ -5,150 +5,177 @@
     android:layout_height="match_parent">
 
     <LinearLayout
-        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="#00FF0000"
+        android:orientation="horizontal">
 
         <ScrollView
-            android:layout_weight="1"
-            android:orientation="vertical"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
             <LinearLayout
-                android:orientation="vertical"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
                 <TextView
                     android:id="@+id/sub1_1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:ellipsize="end"
-                    android:maxLines="1"/>
+                    android:maxLines="1"
+                    android:text="1" />
+
                 <TextView
                     android:id="@+id/sub1_2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
-                    android:maxLines="1"/>
+                    android:maxLines="1" />
+
                 <TextView
                     android:id="@+id/sub1_3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
-                    android:maxLines="1"/>
+                    android:maxLines="1" />
+
                 <TextView
                     android:id="@+id/sub1_4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
-                    android:maxLines="1"/>
+                    android:maxLines="1" />
+
                 <TextView
                     android:id="@+id/sub1_5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
-                    android:maxLines="1"/>
+                    android:maxLines="1" />
+
                 <TextView
                     android:id="@+id/sub1_6"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
-                    android:maxLines="1"/>
+                    android:maxLines="1" />
+
                 <TextView
                     android:id="@+id/sub1_7"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
-                    android:maxLines="1"/>
+                    android:maxLines="1" />
+
                 <TextView
                     android:id="@+id/sub1_8"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
-                    android:maxLines="1"/>
+                    android:maxLines="1" />
+
                 <TextView
                     android:id="@+id/sub1_9"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
-                    android:maxLines="1"/>
+                    android:maxLines="1" />
+
                 <TextView
                     android:id="@+id/sub1_10"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
-                    android:maxLines="1"/>
+                    android:maxLines="1" />
             </LinearLayout>
         </ScrollView>
+
         <ScrollView
-            android:layout_weight="1"
-            android:orientation="vertical"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
             <LinearLayout
-                android:orientation="vertical"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
                 <TextView
                     android:id="@+id/sub2_1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
-                    android:maxLines="1"/>
+                    android:maxLines="1"
+                    android:text="1" />
+
                 <TextView
                     android:id="@+id/sub2_2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
-                    android:maxLines="1"/>
+                    android:maxLines="1" />
+
                 <TextView
                     android:id="@+id/sub2_3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
-                    android:maxLines="1"/>
+                    android:maxLines="1" />
+
                 <TextView
                     android:id="@+id/sub2_4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
-                    android:maxLines="1"/>
+                    android:maxLines="1" />
+
                 <TextView
                     android:id="@+id/sub2_5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
-                    android:maxLines="1"/>
+                    android:maxLines="1" />
+
                 <TextView
                     android:id="@+id/sub2_6"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
-                    android:maxLines="1"/>
+                    android:maxLines="1" />
+
                 <TextView
                     android:id="@+id/sub2_7"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
-                    android:maxLines="1"/>
+                    android:maxLines="1" />
+
                 <TextView
                     android:id="@+id/sub2_8"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
-                    android:maxLines="1"/>
+                    android:maxLines="1" />
+
                 <TextView
                     android:id="@+id/sub2_9"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
-                    android:maxLines="1"/>
+                    android:maxLines="1" />
+
                 <TextView
                     android:id="@+id/sub2_10"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
-                    android:maxLines="1"/>
+                    android:maxLines="1" />
             </LinearLayout>
         </ScrollView>
 

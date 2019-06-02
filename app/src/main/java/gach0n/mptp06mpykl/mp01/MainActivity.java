@@ -46,8 +46,6 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -99,18 +97,7 @@ public class MainActivity extends AppCompatActivity {
         //
 
 
-        callWebView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                browser = findViewById(R.id.webkit);
-                if (browser.getVisibility() == View.INVISIBLE) {
-                    browser.setVisibility(View.VISIBLE);
-                }
-                browser.getSettings().setJavaScriptEnabled(true);
-                browser.setWebViewClient(new WebViewClient());
-                browser.loadUrl("https://search.naver.com/search.naver?ie=utf8&query=" + input.getText());
-            }
-        });
+
 
         final BottomNavigationView bottomNavigation = findViewById(R.id.bottomNavigation);
         bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -155,8 +142,6 @@ public class MainActivity extends AppCompatActivity {
         button = findViewById(R.id.button);
         output = findViewById(R.id.output);
         output.setVisibility(View.INVISIBLE);
-        webPasingSubList1 = findViewById(R.id.webPasingSubItemList1);
-        webPasingSubList2 = findViewById(R.id.webPasingSubItemList2);
         output.setMovementMethod(new ScrollingMovementMethod());
         intent = PendingIntent.getActivity(this, 0, new Intent(getApplicationContext(), MainActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -169,6 +154,59 @@ public class MainActivity extends AppCompatActivity {
                 if (output.getVisibility() == View.INVISIBLE) {
                     output.setVisibility(View.VISIBLE);
                 }
+                TextView sub1_1=findViewById(R.id.sub1_1);
+                sub1_1.setText(sub1_[0]);
+                TextView sub1_3=findViewById(R.id.sub1_3);
+                sub1_3.setText(sub1_[1]);
+                TextView sub1_5=findViewById(R.id.sub1_5);
+                sub1_5.setText(sub1_[2]);
+                TextView sub1_7=findViewById(R.id.sub1_7);
+                sub1_7.setText(sub1_[3]);
+                TextView sub1_9=findViewById(R.id.sub1_9);
+                sub1_9.setText(sub1_[4]);
+                TextView sub2_1=findViewById(R.id.sub2_1);
+                sub2_1.setText(sub1_[5]);
+                TextView sub2_3=findViewById(R.id.sub2_3);
+                sub2_3.setText(sub1_[6]);
+                TextView sub2_5=findViewById(R.id.sub2_5);
+                sub2_5.setText(sub1_[7]);
+                TextView sub2_7=findViewById(R.id.sub2_7);
+                sub2_7.setText(sub1_[8]);
+                TextView sub2_9=findViewById(R.id.sub2_9);
+                sub2_9.setText(sub1_[9]);
+                TextView sub1_2=findViewById(R.id.sub1_2);
+                sub1_2.setText(sub2_[0]);
+                TextView sub1_4=findViewById(R.id.sub1_4);
+                sub1_4.setText(sub2_[1]);
+                TextView sub1_6=findViewById(R.id.sub1_6);
+                sub1_6.setText(sub2_[2]);
+                TextView sub1_8=findViewById(R.id.sub1_8);
+                sub1_8.setText(sub2_[3]);
+                TextView sub1_10=findViewById(R.id.sub1_10);
+                sub1_10.setText(sub2_[4]);
+                TextView sub2_2=findViewById(R.id.sub2_2);
+                sub2_2.setText(sub2_[5]);
+                TextView sub2_4=findViewById(R.id.sub2_4);
+                sub2_4.setText(sub2_[6]);
+                TextView sub2_6=findViewById(R.id.sub2_6);
+                sub2_6.setText(sub2_[7]);
+                TextView sub2_8=findViewById(R.id.sub2_8);
+                sub2_8.setText(sub2_[8]);
+                TextView sub2_10=findViewById(R.id.sub2_10);
+                sub2_10.setText(sub2_[9]);
+            }
+        });
+
+        callWebView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                browser = findViewById(R.id.webkit);
+                if (browser.getVisibility() == View.INVISIBLE) {
+                    browser.setVisibility(View.VISIBLE);
+                }
+                browser.getSettings().setJavaScriptEnabled(true);
+                browser.setWebViewClient(new WebViewClient());
+                browser.loadUrl("https://search.naver.com/search.naver?ie=utf8&query=" + input.getText());
             }
         });
         //혹시 예전에 썻던 쿼리가 있으면 써야지
@@ -237,7 +275,7 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                 });
-                alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                alert.setNegativeButton("알림 해제", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         timerClass.setTime(-1);
                     }
@@ -439,9 +477,7 @@ public class MainActivity extends AppCompatActivity {
                 .setContentIntent(intent);
         notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         notificationManager.notify(0, builder.build());
-        try {
-        }catch(Exception e){
-            Log.d("tag","씨발 + "+e.toString());
-        }
+
+
     }
 }
