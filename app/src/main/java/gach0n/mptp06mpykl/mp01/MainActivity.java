@@ -38,7 +38,7 @@ import gach0n.mptp06mpykl.mp01.Fragment.Menu1Fragment;
 import gach0n.mptp06mpykl.mp01.Fragment.Menu2Fragment;
 import gach0n.mptp06mpykl.mp01.Fragment.Menu3Fragment;
 
-import com.example.mp01.R;
+import gach0n.mptp06mpykl.mp01.R;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

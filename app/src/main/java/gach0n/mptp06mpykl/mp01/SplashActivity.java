@@ -6,7 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
 
 import com.airbnb.lottie.LottieAnimationView;
-import com.example.mp01.R;
+import gach0n.mptp06mpykl.mp01.R;
 
 public class SplashActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {

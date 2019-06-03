@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.mp01.R;
+import gach0n.mptp06mpykl.mp01.R;
 
 import java.util.ArrayList;
 

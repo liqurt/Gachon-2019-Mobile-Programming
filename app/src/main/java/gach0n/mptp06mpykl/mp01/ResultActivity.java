@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.mp01.R;
+import gach0n.mptp06mpykl.mp01.R;
 
 public class ResultActivity extends AppCompatActivity {
     TextView sub1_1;
